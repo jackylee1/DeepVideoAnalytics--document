@@ -1,0 +1,77 @@
+一、=====================================================================================
+汉化修改页面文件按照导航栏顺序（位置：DeepVideoAnalytics\server\templates）
+1.面板
+	1)server\templates\dvaui\dashboard.html
+2.视频文件/数据集
+	1)server\templates\dvaui\video_list.html
+	2)server\templates\dvaui\video_detail.html
+3.之前的可视化查询
+	1)server\templates\dvaui\query_list.html
+	2)server\templates\dvaui\query_detail.html
+4.运行DVAPQL进程
+	1)server\templates\dvaui\stored_process_list.html
+	2)查看存储进程模板详情 server\templates\dvaui\stored_process_detail.html
+5.之前的DVAPQL进程
+	1)server\templates\dvaui\process_list.html
+	2)详情页面 server\templates\dvaui\process_detail.html 
+6.全文检索
+	1)server\templates\dvaui\textsearch.html 
+	2)详情页面 server\templates\dvaui\frame_detail.html
+7.检索器
+	1)server\templates\dvaui\retriever_list.html
+8.索引
+	1)server\templates\dvaui\index_list.html
+9.训练模型
+	1)server\templates\dvaui\model_list.html
+	2)server\templates\dvaui\model_detail.html
+10.训练集
+	1)server\templates\dvaui\training_set_list.html
+11.外部数据脚本
+	1)server\templates\dvaui\external_data.html
+12.任务
+	1)server\templates\dvaui\tevent_list.html
+	2)任务详情 server\templates\dvaui\tevent_detail.html
+13.本地日志
+	1)server\templates\dvaui\status.html
+14.管理
+	1)server\templates\dvaui\management.html
+15.安全&认证标记
+	1)server\templates\dvaui\security.html
+16.REST API(开发者中心)
+
+二、============================================================================
+项目环境中的第三方库django-celery-beat 和 django-celery-results 的国际化，由于第三方库本身支持国际化所以只修改部分内容即可。
+  1.django-celery-beat 的包的django-celery-beat\django_celery_beat目录中新建locale文件夹（用于存放生成国际化的文件）
+  2.修改需要国际化的内容，例如：在.py文件中添加 from django.utils.translation import ugettext_lazy as _ 对国际化的内容进行标记 _(国际化内容)
+  3.修改django-celery-beat目录下的MANIFEST.in文件中的 recursive-include django_celery_beat 之后的改为 * 表示
+  4.修改django-celery-beat目录下的setup.py中的setuptools.setup()配置的参数 include_package_data值改为True
+  5.在powershell中进入django-celery-beat目录执行 django-admin makemessages -l zh_Hans 命令，于是在之前创建的locale文件下自动生成国际化 .po文件
+  6.修改.po文件中对应的内容，在进入powershell中执行 django-admin compilemessages -l zh_Hans命令编译.po文件生成另一个.mo文件
+  国际化完成。
+  django-celery-results国际化同理。
+
+三、=============================================================================
+DeepVideoAnalytics国际化
+  1.在DeepVideoAnalytics\server目录下新建locale文件夹,
+  2.在DeepVideoAnalytics\server\dva目录下setting.py文件中添加了对应locale路径LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'))
+     及修改语言为LANGUAGE_CODE = 'zh-Hans'和时区：TIME_ZONE = 'Asia/Shanghai'
+  3.对需要国际化的内容进行标注_()。
+  5.在powershell中执行 django-admin makemessages -l zh_Hans 命令，于是在之前创建的locale文件下自动生成国际化 .po文件
+  6.修改.po文件中对应的内容，在进入powershell中执行 django-admin compilemessages -l zh_Hans命令编译.po文件生成另一个.mo文件
+
+四、==============================================================================
+插件select2、dataTable的国际化修改
+  1.DeepVideoAnalytics\server\dvaapp\static\select2\js\i18n 下的zh-CN.js文件对应内容
+  2.server\dvaapp\static\table.js 修改文件中的dataTable的参数添加language配置，用于页面列表展示（上页、下页...）
+
+五、==============================================================================
+修改样式文件位置
+  DeepVideoAnalytics\server\dvaapp\static\dist目录文件
+
+六、==============================================================================
+修改注销退出，登录界面
+  修改文件DeepVideoAnalytics\server\dvaui目录下的views.py 、urls.py
+
+七、==============================================================================
+修改对应的站点名称可在站点内的__init__.py，在修改时添加  default_app_config='dvaapp.apps.DvaappConfig',在apps.py通过国际化修改名称
+
